@@ -1,8 +1,8 @@
-require 'parser/node'
-require 'parser/nodes/binary_expression'
-require 'parser/nodes/integer'
-require 'parser/nodes/dice_roll'
-require 'parser/dice_roll'
+require 'r3d6-parser/node'
+require 'r3d6-parser/nodes/binary_expression'
+require 'r3d6-parser/nodes/integer'
+require 'r3d6-parser/nodes/dice_roll'
+require 'r3d6-parser/dice_roll'
 
 module R3D6::Parser
     class Parser

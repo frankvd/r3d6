@@ -1,8 +1,6 @@
 require 'sinatra/base'
-
-require 'parser/token'
-require 'parser/lexer'
-require 'parser/parser'
+require 'r3d6-parser/lexer'
+require 'r3d6-parser/parser'
 
 class App < Sinatra::Base
 

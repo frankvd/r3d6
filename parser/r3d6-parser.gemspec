@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
     s.licenses    = []
     s.summary     = ""
     s.description = ""
-    s.authors     = []
+    s.authors     = ['Frank']
     s.email       = ''
     s.files       = ["lib/*"]
     s.homepage    = ''

@@ -1,5 +1,5 @@
-require 'parser/lexer'
-require 'parser/parser'
+require 'r3d6-parser/lexer'
+require 'r3d6-parser/parser'
 
 RSpec.describe R3D6::Parser::Parser, "#parse" do
     context "3d12 + 4" do

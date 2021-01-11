@@ -1,4 +1,4 @@
-require 'parser/token'
+require 'r3d6-parser/token'
 
 module R3D6::Parser
     class Lexer
