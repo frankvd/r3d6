@@ -9,7 +9,13 @@ class App < Sinatra::Base
         set :parser, R3D6::Parser::Parser.new
     end
 
+    get '/favicon.ico' do
+        404
+    end
+
     get '/*' do |roll|
+        content_type 'text/plain'
+        headers 'Access-Control-Allow-Origin' => 'http://localhost:8000'
         begin
             ast = settings.parser.parse(settings.lexer.tokenize(roll))
             output = ast.evaluate
