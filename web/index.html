@@ -13,14 +13,18 @@
       margin: 0;
       padding: 0;
       font-family: sans-serif;
-      background-color: #ededed;
+      background-color: #f3f3f3;
     }
   </style>
   <title>r3d6-web</title>
 </head>
 
 <body>
-  <r3d6-roll></r3d6-roll>
+  <r3d6-environment>
+    <r3d6-roll slot="roll"></r3d6-roll>
+    <r3d6-roll slot="roll"></r3d6-roll>
+    <r3d6-roll slot="roll"></r3d6-roll>
+  </r3d6-environment>
 
   <script type="module" src="./out-tsc/src/r3d6-web.js"></script>
 </body>

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+(cd api; bin/rackup) & (cd web; npm run start) && fg
