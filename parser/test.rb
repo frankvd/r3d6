@@ -1,12 +1,12 @@
 require "rubygems"
 require "bundler/setup"
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/lib"
-require "parser/lexer"
-require "parser/parser"
+require "r3d6-parser/lexer"
+require "r3d6-parser/parser"
 
 require 'pp'
 
-test = '1+1+4d12'
+test = 'd5'
 
 characters = test.chars
 
@@ -25,6 +25,7 @@ def print_node(n)
     print_node(n.right) unless n.right.nil?
 end
 
+print_node ast
 
 out = ast.evaluate
 puts "#{ast.echo} = #{out}"

@@ -29,7 +29,7 @@ module R3D6::Parser
             when is_digit(c)
                 @buffer << c
             when c == 'd'
-                @buffer << c unless @buffer.empty?
+                @buffer << c
             when is_operator(c)
                 unless @buffer.empty?
                     token = Token.new

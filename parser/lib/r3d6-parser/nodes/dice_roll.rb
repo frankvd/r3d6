@@ -3,7 +3,7 @@ module R3D6::Parser::Nodes
         def evaluate
             @value.roll
             meta[:echo] = "(#{@value.dice.join(" + ")})"
-            @value
+            @value.sum
         end
     end
 end

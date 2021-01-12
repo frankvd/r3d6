@@ -3,7 +3,7 @@ module R3D6::Parser
         attr_accessor :dice
 
         def initialize(number, die)
-            @number = number
+            @number = [number, 1].max
             @die = die
 
             @dice = []
