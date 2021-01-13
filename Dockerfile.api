@@ -4,7 +4,7 @@ RUN apk add --update build-base
 
 WORKDIR /app
 
-RUN echo "/" > /app/CHECKS
+RUN echo "http://0.0.0.0:28564/" > /app/CHECKS
 
 ADD ./api /app
 ADD ./parser /parser
