@@ -9,7 +9,7 @@ ADD ./parser /parser
 RUN gem install bundler:2.2.4
 RUN bundle install
 
-EXPOSE 82547
+EXPOSE 28564
 
 CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "5000"]
 
