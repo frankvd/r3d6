@@ -1,4 +1,8 @@
+FROM node:15.5.1 AS builder
+COPY ./web /app
+RUN cd /app && yarn install && npm run build
+
 FROM nginx:1.19.6-alpine
 RUN sed -i 's/80/30294/' /etc/nginx/conf.d/default.conf
-COPY ./web/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 30294

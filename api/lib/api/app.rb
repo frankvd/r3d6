@@ -15,7 +15,7 @@ class App < Sinatra::Base
 
     get '/*' do |roll|
         content_type 'text/plain'
-        headers 'Access-Control-Allow-Origin' => 'http://localhost:8000'
+        headers 'Access-Control-Allow-Origin' => '*'
         begin
             ast = settings.parser.parse(settings.lexer.tokenize(roll))
             output = ast.evaluate

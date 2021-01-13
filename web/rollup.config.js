@@ -27,7 +27,7 @@ export default merge(baseConfig, {
   input: './index.html',
   plugins: [
     replace({
-      __API_BASE_URL__: 'http://localhost:9292/'
+      __API_BASE_URL__: 'http://134.209.94.221:28564/'
     })
   ]
 
