@@ -4,13 +4,12 @@ RUN apk add --update build-base
 
 WORKDIR /app
 
-RUN echo "http://0.0.0.0:28564/" > /app/CHECKS
-
 ADD ./api /app
 ADD ./parser /parser
 RUN gem install bundler:2.2.4
 RUN bundle install
 
+RUN echo "/" > /app/CHECKS
 EXPOSE 28564
 
 CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "28564"]
