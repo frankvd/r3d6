@@ -4,6 +4,8 @@ RUN apk add --update build-base
 
 WORKDIR /app
 
+RUN echo "/" > /app/CHECKS
+
 ADD ./api /app
 ADD ./parser /parser
 RUN gem install bundler:2.2.4
