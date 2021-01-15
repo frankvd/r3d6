@@ -6,7 +6,7 @@ require "r3d6-parser/parser"
 
 require 'pp'
 
-test = 'd5'
+test = '3d6d1+4'
 
 characters = test.chars
 

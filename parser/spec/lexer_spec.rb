@@ -3,13 +3,21 @@ require 'r3d6-parser/parser'
 
 include R3D6::Parser
 
-RSpec.describe R3D6::Parser::Lexer, "#tokenize"  do
+RSpec.describe Lexer, "#tokenize"  do
     it "Supports dice rolls" do
         text = "3d6"
 
-        lexer = Parser::Lexer.new
+        lexer = Lexer.new
         expect(lexer.tokenize(text)).to eq([Token.new(Token::Dice, "3d6")])
     end
+
+    it "Supports the drop lowest dice roll modifier" do
+        text = "3d6d1"
+
+        lexer = Lexer.new
+        expect(lexer.tokenize(text)).to eq([Token.new(Token::Dice, "3d6"), Token.new(Token::DiceRollModifier, "d1")])
+    end
+
     it "Supports numbers" do
         text = "42"
 
@@ -32,12 +40,13 @@ RSpec.describe R3D6::Parser::Lexer, "#tokenize"  do
     end
 
     it "Tokenizes text into an array of tokens" do
-        text = "2d8+3d6+4-1"
+        text = "2d8+3d6d1+4-1"
 
         expected = [
             Token.new(Token::Dice, "2d8"),
             Token.new(Token::Operator, "+"),
             Token.new(Token::Dice, "3d6"),
+            Token.new(Token::DiceRollModifier, "d1"),
             Token.new(Token::Operator, "+"),
             Token.new(Token::Number, "4"),
             Token.new(Token::Operator, "-"),

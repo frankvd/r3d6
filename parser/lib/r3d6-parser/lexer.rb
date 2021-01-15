@@ -3,23 +3,17 @@ require 'r3d6-parser/token'
 module R3D6::Parser
     class Lexer
         def initialize
-            @buffer = []
             @output = []
+            @current = nil
         end
 
         def tokenize(input)
             @output = []
-            @buffer = []
+            @current = Token.new
             input.each_char do |c|
                 next_char c
             end
-
-            unless @buffer.empty?
-                token = Token.new
-                token.type = @buffer.include?('d') ? Token::Dice : Token::Number
-                token.value = @buffer.join
-                @output << token
-            end
+            append unless @current.type == Token::Unknown
 
             @output
         end
@@ -27,18 +21,19 @@ module R3D6::Parser
         def next_char(c)
             case
             when is_digit(c)
-                @buffer << c
+                @current.value << c
+                @current.type = Token::Number if @current.type == Token::Unknown
             when c == 'd'
-                @buffer << c
-            when is_operator(c)
-                unless @buffer.empty?
-                    token = Token.new
-                    token.type = @buffer.include?('d') ? Token::Dice : Token::Number
-                    token.value = @buffer.join
-                    @output << token
-                    @buffer = []
+                if [Token::Dice, Token::DiceRollModifier].include? @current.type
+                    append
+                    @current.type = Token::DiceRollModifier
+                    @current.value << c
+                elsif [Token::Number, Token::Unknown].include? @current.type
+                    @current.value << c
+                    @current.type = Token::Dice
                 end
-
+            when is_operator(c)
+                append unless @current.type == Token::Unknown
                 token = Token.new
                 token.type = Token::Operator
                 token.value = c
@@ -47,6 +42,11 @@ module R3D6::Parser
             else
                 raise "Unexpected input"
             end
+        end
+
+        def append
+            @output << @current
+            @current = Token.new
         end
 
         def is_digit(c)

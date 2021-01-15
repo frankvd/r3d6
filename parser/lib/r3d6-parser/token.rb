@@ -1,14 +1,16 @@
 module R3D6
     module Parser
         class Token
-            Number = 0
-            Dice = 1
-            Operator = 2
+            Unknown = 0
+            Number = 1
+            Dice = 2
+            DiceRollModifier = 3
+            Operator = 4
 
             attr_accessor :type
             attr_accessor :value
 
-            def initialize(type = 0, value = '')
+            def initialize(type = Token::Unknown, value = '')
                 @type = type
                 @value = value
             end

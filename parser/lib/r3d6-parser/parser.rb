@@ -3,6 +3,8 @@ require 'r3d6-parser/nodes/binary_expression'
 require 'r3d6-parser/nodes/integer'
 require 'r3d6-parser/nodes/dice_roll'
 require 'r3d6-parser/dice_roll'
+require 'r3d6-parser/modifier'
+require 'r3d6-parser/modifiers/drop_lowest'
 
 module R3D6::Parser
     class Parser
@@ -22,6 +24,8 @@ module R3D6::Parser
                     @nodes << Nodes::Integer.new(t.value.to_i, nil, nil)
                 elsif t.type == Token::Dice 
                     @nodes << Nodes::DiceRoll.new(DiceRoll.from_s(t.value), nil, nil)
+                elsif t.type == Token::DiceRollModifier
+                    @nodes.last.value.modifiers << Modifier::from_s(t.value)
                 end
             end
 
