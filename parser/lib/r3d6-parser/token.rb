@@ -16,6 +16,22 @@ module R3D6
         @value = value
       end
 
+      def self.dice(value)
+        Token.new Token::DICE, value
+      end
+
+      def self.number(value)
+        Token.new Token::NUMBER, value
+      end
+
+      def self.modifier(value)
+        Token.new Token::DICE_ROLL_MODIFIER, value
+      end
+
+      def self.operator(value)
+        Token.new Token::OPERATOR, value
+      end
+
       def ==(other)
         value == other.value && type == other.type
       end

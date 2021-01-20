@@ -73,4 +73,11 @@ RSpec.describe Lexer, '#tokenize' do
     lexer = Lexer.new
     expect(lexer.tokenize(text)).to eq(expected)
   end
+
+  it "Errors on unexpected input" do
+    text = "3d6 + hunter2"
+
+    lexer = Lexer.new
+    expect { lexer.tokenize(text) }.to raise_error("Unexpected input")
+  end
 end

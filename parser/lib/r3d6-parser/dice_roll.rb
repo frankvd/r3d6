@@ -39,14 +39,6 @@ module R3D6
         end
       end
 
-      def +(other)
-        sum + other
-      end
-
-      def -(other)
-        sum - other
-      end
-
       def ==(other)
         die == other.die && number == other.number && dice == other.dice && modifiers == other.modifiers
       end

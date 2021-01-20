@@ -6,24 +6,14 @@ require 'r3d6-parser/parser'
 include R3D6::Parser
 
 RSpec.describe R3D6::Parser::Parser, '#parse' do
-  it 'Sums the output' do
-    srand(42)
-    test = '3d12+4'
-    tokenizer = R3D6::Parser::Lexer.new
-    tokens = tokenizer.tokenize(test)
-    parser = R3D6::Parser::Parser.new
-    ast = parser.parse tokens
-    out = ast.evaluate
-
-    expect(out).to eq(7 + 4 + 11 + 4)
-  end
-
   it 'Creates an AST from an array of tokens' do
     tokens = [
-      Token.new(Token::DICE, '3d6'),
-      Token.new(Token::DICE_ROLL_MODIFIER, 'd1'),
-      Token.new(Token::OPERATOR, '+'),
-      Token.new(Token::NUMBER, '4')
+      Token.number('3'),
+      Token.operator('+'),
+      Token.dice('3d6'),
+      Token.modifier('d1'),
+      Token.operator('-'),
+      Token.number('4')
     ]
 
     parser = Parser.new
@@ -34,8 +24,11 @@ RSpec.describe R3D6::Parser::Parser, '#parse' do
 
     expect(ast).to eq(
       Nodes::BinaryExpression.new('+',
-                                  Nodes::DiceRoll.new(roll),
-                                  Nodes::Integer.new(4))
+        Nodes::Integer.new(3),
+        Nodes::BinaryExpression.new('-',
+          Nodes::DiceRoll.new(roll),
+          Nodes::Integer.new(4))
+      )
     )
   end
 end
