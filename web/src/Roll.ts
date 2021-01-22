@@ -9,20 +9,17 @@ export class Roll extends LitElement {
   static get styles() {
     return css`
       .roll-container {
-        /* display: grid;
-        grid-template-columns: auto 80px;
-        grid-template-rows: 25px 60px 40px;
-        grid-auto-flow: column; */
         background: #fff;
         margin: 24px 0;
-        border: 30px solid #FFFFFF;
         border-radius: 30px;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         overflow: auto;
         width: 420px;
+        box-sizing: border-box;
       }
 
       .roll-title {
+        margin: 20px 0 0 20px;
         font-family: Roboto Slab;
         font-style: normal;
         font-weight: normal;
@@ -32,6 +29,10 @@ export class Roll extends LitElement {
       }
       .roll-menu-button {
         float: right;
+        font-size: 5px;
+        padding: 24px;
+        letter-spacing: 2px;
+        cursor: pointer;
       }
       .roll-button {
         font-size: 18px;
@@ -41,14 +42,14 @@ export class Roll extends LitElement {
         color: #000;
         float:right;
         text-decoration: none;
-        margin: 12px;
+        margin: 20px 40px 20px 0;
         cursor: pointer;
       }
 
       .roll-definition {
+        margin: 20px 0 0 20px;
         font-size: 24px;
         line-height: 28px;
-        margin: 20px 0;
       }
 
       .roll-input {
@@ -59,6 +60,7 @@ export class Roll extends LitElement {
       }
 
       .roll-output {
+        margin: 12px 0 0 20px;
         background: #000000;
         padding: 6px;
         clip-path: polygon(6px 0%, calc(100% - 6px) 0%, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0% calc(100% - 6px), 0% 6px);
@@ -69,6 +71,7 @@ export class Roll extends LitElement {
         box-sizing: border-box;
         height: 30px;
         color: #fff;
+        width: 380px;
       }
     `
   }
@@ -76,7 +79,7 @@ export class Roll extends LitElement {
   render() {
     return html`
       <div class="roll-container">
-        <div class="roll-menu-button">...</div>
+        <div class="roll-menu-button">&#x2B24;&#x2B24;&#x2B24;</div>
         <div class="roll-title">Shortsword +1</div>
         <div class="roll-definition">${this.definition}</div>
         <div class="roll-output">${this.output}</div>
