@@ -38,14 +38,24 @@ export class Roll extends LitElement {
         top: 20px;
         background: #fff;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        padding: 20px;
+        transition: opacity 0.5s ease, margin 0.5s ease;
+      }
+      .roll-menu-item {
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+      .roll-menu-item:hover {
+        background: #f3f3f3;
       }
 
       .roll-menu-opened {
-        display: block;
+        margin-top: 0;
+        opacity: 1;
       }
       .roll-menu-closed {
-        display: none;
+        margin-top: -10px;
+        z-index: -1;
+        opacity: 0;
       }
 
       .roll-menu-button {
@@ -101,11 +111,11 @@ export class Roll extends LitElement {
     return html`
       <div class="roll-container">
         <div class="roll-menu ${this.menu_state}">
-          <div>Edit</div>
-          <div>Remove</div>
+          <div class="roll-menu-item">Edit</div>
+          <div class="roll-menu-item">Remove</div>
         </div>
         <div class="roll-menu-button" @click="${this.openMenu}">&#x2B24;&#x2B24;&#x2B24;</div>
-        <div class="roll-title">Shortsword +1</div>
+        <div class="roll-title">${this.title}</div>
         <div class="roll-definition">${this.definition}</div>
         <div class="roll-output">${this.output}</div>
         <a class="roll-button" @click="${this.roll}">Roll</a>
@@ -117,10 +127,15 @@ export class Roll extends LitElement {
 
   openMenu() {
     this.menu_state = this.MENU_STATE_OPEN
+    setTimeout(() => document.addEventListener('click', (e) => this.maybeCloseMenu(e), {once: true}))
   }
 
   closeMenu() {
     this.menu_state = this.MENU_STATE_CLOSED
+  }
+
+  maybeCloseMenu(e : Event)  {
+    this.closeMenu()
   }
 
   roll() {
