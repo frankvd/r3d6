@@ -6,9 +6,14 @@ export class Roll extends LitElement {
   @property({type: String}) definition = ''
   @property({type: String}) output = '... ... ... ... ... ... ... ... ... ... ... ...'
 
+  readonly MENU_STATE_OPEN = 'roll-menu-opened'
+  readonly MENU_STATE_CLOSED = 'roll-menu-closed'
+  @property({type: String}) menu_state = this.MENU_STATE_CLOSED
+
   static get styles() {
     return css`
       .roll-container {
+        position: relative;
         background: #fff;
         margin: 24px 0;
         border-radius: 30px;
@@ -27,6 +32,22 @@ export class Roll extends LitElement {
         line-height: 32px;
         color: #000000;
       }
+      .roll-menu {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        background: #fff;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        padding: 20px;
+      }
+
+      .roll-menu-opened {
+        display: block;
+      }
+      .roll-menu-closed {
+        display: none;
+      }
+
       .roll-menu-button {
         float: right;
         font-size: 5px;
@@ -79,7 +100,11 @@ export class Roll extends LitElement {
   render() {
     return html`
       <div class="roll-container">
-        <div class="roll-menu-button">&#x2B24;&#x2B24;&#x2B24;</div>
+        <div class="roll-menu ${this.menu_state}">
+          <div>Edit</div>
+          <div>Remove</div>
+        </div>
+        <div class="roll-menu-button" @click="${this.openMenu}">&#x2B24;&#x2B24;&#x2B24;</div>
         <div class="roll-title">Shortsword +1</div>
         <div class="roll-definition">${this.definition}</div>
         <div class="roll-output">${this.output}</div>
@@ -88,6 +113,14 @@ export class Roll extends LitElement {
     `
 
     //  <input class="roll-input" value="${this.definition}" @change=${(e:any) => {this.definition = e.target.value;}} />
+  }
+
+  openMenu() {
+    this.menu_state = this.MENU_STATE_OPEN
+  }
+
+  closeMenu() {
+    this.menu_state = this.MENU_STATE_CLOSED
   }
 
   roll() {
