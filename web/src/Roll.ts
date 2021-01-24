@@ -6,6 +6,10 @@ export class Roll extends LitElement {
   @property({type: String}) definition = ''
   @property({type: String}) output = '... ... ... ... ... ... ... ... ... ... ... ...'
 
+  readonly STATE_DEFAULT = 'roll-state-default'
+  readonly STATE_EDIT = 'roll-state-edit'
+  @property({type: String}) state = this.STATE_DEFAULT
+
   readonly MENU_STATE_OPEN = 'roll-menu-opened'
   readonly MENU_STATE_CLOSED = 'roll-menu-closed'
   @property({type: String}) menu_state = this.MENU_STATE_CLOSED
@@ -23,8 +27,12 @@ export class Roll extends LitElement {
         box-sizing: border-box;
       }
 
+      .roll-container.roll-state-edit {
+        padding-top: 22px;
+      }
+
       .roll-title {
-        margin: 20px 0 0 20px;
+        margin: 30px 0 0 20px;
         font-family: Roboto Slab;
         font-style: normal;
         font-weight: normal;
@@ -69,7 +77,6 @@ export class Roll extends LitElement {
         font-size: 18px;
         line-height: 21px;
         text-transform: uppercase;
-        font-feature-settings: 'cpsp' on;
         color: #000;
         float:right;
         text-decoration: none;
@@ -81,13 +88,6 @@ export class Roll extends LitElement {
         margin: 20px 0 0 20px;
         font-size: 24px;
         line-height: 28px;
-      }
-
-      .roll-input {
-        background: var(--bg);
-        border: 0;
-        border-radius: 0;
-        outline: none;
       }
 
       .roll-output {
@@ -104,14 +104,45 @@ export class Roll extends LitElement {
         color: #fff;
         width: 380px;
       }
+
+      label, input {
+        display: block;
+      }
+
+      label {
+        margin: 10px 0 0 20px;
+        font-size: 12px;
+        line-height: 14px;
+        color: #888888;
+      }
+
+      input {
+        width: 355px;
+        font-size: 24px;
+        line-height: 28px;
+        margin: 4px 0 0 20px;
+        background: #F3F3F3;
+        padding: 4px 12px;
+        border-radius: 4px;
+        border: 0;
+        outline: none;
+      }
     `
   }
 
   render() {
+    if (this.state == this.STATE_DEFAULT) {
+      return this.renderDefault()
+    } else {
+      return this.renderEdit()
+    }
+  }
+
+  renderDefault() {
     return html`
-      <div class="roll-container">
+      <div class="roll-container ${this.state}">
         <div class="roll-menu ${this.menu_state}">
-          <div class="roll-menu-item">Edit</div>
+          <div class="roll-menu-item" @click="${this.edit}">Edit</div>
           <div class="roll-menu-item">Remove</div>
         </div>
         <div class="roll-menu-button" @click="${this.openMenu}">&#x2B24;&#x2B24;&#x2B24;</div>
@@ -125,17 +156,33 @@ export class Roll extends LitElement {
     //  <input class="roll-input" value="${this.definition}" @change=${(e:any) => {this.definition = e.target.value;}} />
   }
 
+  renderEdit() {
+    return html`
+      <div class="roll-container ${this.state}">
+        <label>Title</label>
+        <input class="roll-input" value="${this.title}" @change=${(e:any) => {this.title = e.target.value;}} />
+        <label>Definition</label>
+        <input class="roll-input" value="${this.definition}" @change=${(e:any) => {this.definition = e.target.value;}} />
+        <a class="roll-button" @click="${this.save}">Save</a>
+      </div>
+    `
+  }
+
   openMenu() {
     this.menu_state = this.MENU_STATE_OPEN
-    setTimeout(() => document.addEventListener('click', (e) => this.maybeCloseMenu(e), {once: true}))
+    setTimeout(() => document.addEventListener('click', () => this.closeMenu(), {once: true}))
   }
 
   closeMenu() {
     this.menu_state = this.MENU_STATE_CLOSED
   }
 
-  maybeCloseMenu(e : Event)  {
-    this.closeMenu()
+  save() {
+    this.state = this.STATE_DEFAULT
+  }
+
+  edit() {
+    this.state = this.STATE_EDIT
   }
 
   roll() {
