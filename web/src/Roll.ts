@@ -4,7 +4,7 @@ import Config from "./Config"
 export class Roll extends LitElement {
   @property({type: String}) title = ''
   @property({type: String}) definition = ''
-  @property({type: String}) output = '... ... ... ... ... ... ... ... ... ... ... ...'
+  @property({type: String}) output = ''
 
   readonly STATE_DEFAULT = 'roll-state-default'
   readonly STATE_EDIT = 'roll-state-edit'
@@ -13,6 +13,13 @@ export class Roll extends LitElement {
   readonly MENU_STATE_OPEN = 'roll-menu-opened'
   readonly MENU_STATE_CLOSED = 'roll-menu-closed'
   @property({type: String}) menu_state = this.MENU_STATE_CLOSED
+
+  constructor(title = '', definition = '', output = '... ... ... ... ... ... ... ... ... ... ... ...') {
+    super()
+    this.title = title
+    this.definition = definition
+    this.output = output
+  }
 
   static get styles() {
     return css`
@@ -143,7 +150,7 @@ export class Roll extends LitElement {
       <div class="roll-container ${this.state}">
         <div class="roll-menu ${this.menu_state}">
           <div class="roll-menu-item" @click="${this.edit}">Edit</div>
-          <div class="roll-menu-item">Remove</div>
+          <div class="roll-menu-item" @click="${this.triggerRemoval}">Remove</div>
         </div>
         <div class="roll-menu-button" @click="${this.openMenu}">&#x2B24;&#x2B24;&#x2B24;</div>
         <div class="roll-title">${this.title}</div>
@@ -183,6 +190,10 @@ export class Roll extends LitElement {
 
   edit() {
     this.state = this.STATE_EDIT
+  }
+
+  triggerRemoval() {
+    this.dispatchEvent(new CustomEvent('remove-roll', {detail: {roll: this}, bubbles: true}))
   }
 
   roll() {
