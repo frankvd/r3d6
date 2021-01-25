@@ -89,6 +89,7 @@ export class Roll extends LitElement {
         text-decoration: none;
         margin: 20px 40px 20px 0;
         cursor: pointer;
+        user-select: none;
       }
 
       .roll-definition {

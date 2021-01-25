@@ -57,6 +57,7 @@ export class Environment extends LitElement {
     let roll = new Roll
     roll.title = "New"
     roll.definition = "1d20"
+    roll.state = roll.STATE_EDIT
     this.rolls = [...this.rolls, roll]
   }
 
