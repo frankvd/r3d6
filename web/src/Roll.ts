@@ -187,6 +187,7 @@ export class Roll extends LitElement {
 
   save() {
     this.state = this.STATE_DEFAULT
+    this.dispatchEvent(new CustomEvent('roll-updated', {detail: {roll: this}, bubbles: true}))
   }
 
   edit() {

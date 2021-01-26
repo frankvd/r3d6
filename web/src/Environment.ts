@@ -38,7 +38,7 @@ export class Environment extends LitElement {
   render() {
     return html`
       <div>
-        <div @remove-roll=${this.removeRoll} id="rolls">
+        <div @roll-updated=${this.updated} @remove-roll=${this.removeRoll} id="rolls">
           ${this.rolls}
         </div>
         <div>
@@ -48,8 +48,7 @@ export class Environment extends LitElement {
     `
   }
 
-  updated(changed : Map<string, any>) {
-    console.log(changed)
+  updated() {
     this.storage.save(this.rolls)
   }
 

@@ -19,6 +19,12 @@ const baseConfig = createSpaConfig({
 
   // set to true to inject the service worker registration into your index.html
   injectServiceWorker: false,
+
+  html: {
+    transform: [
+      html => html.replace(/<link rel="preload" href="[^"]+" as="script" crossorigin="anonymous">/, '')
+    ]
+  }
 });
 
 export default merge(baseConfig, {
