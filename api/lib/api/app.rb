@@ -18,7 +18,7 @@ class App < Sinatra::Base
         headers 'Access-Control-Allow-Origin' => '*'
         begin
             ast = settings.parser.parse(settings.lexer.tokenize(roll))
-            output = ast.evaluate
+            output = ast.evaluate params
 
             "#{ast.echo} = #{output}"
         rescue => exception

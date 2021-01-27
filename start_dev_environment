@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-(cd api; bin/rackup) & (cd web; npm run start) && fg
+(cd api; bin/rackup -o 0.0.0.0) & (cd web; npm run start) && fg

@@ -13,7 +13,7 @@ RSpec.describe R3D6::Parser::Parser, '#parse' do
       Token.dice('3d6'),
       Token.modifier('d1'),
       Token.operator('-'),
-      Token.number('4')
+      Token.variable('STR')
     ]
 
     parser = Parser.new
@@ -27,7 +27,7 @@ RSpec.describe R3D6::Parser::Parser, '#parse' do
         Nodes::Integer.new(3),
         Nodes::BinaryExpression.new('-',
           Nodes::DiceRoll.new(roll),
-          Nodes::Integer.new(4))
+          Nodes::Variable.new('STR'))
       )
     )
   end

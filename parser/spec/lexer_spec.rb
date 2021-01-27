@@ -6,43 +6,50 @@ require 'r3d6-parser/parser'
 include R3D6::Parser
 
 RSpec.describe Lexer, '#tokenize' do
-  it 'Supports dice rolls' do
+  it 'supports dice rolls' do
     text = '3d6'
 
     lexer = Lexer.new
     expect(lexer.tokenize(text)).to eq([Token.new(Token::DICE, '3d6')])
   end
 
-  it 'Supports the drop lowest dice roll modifier' do
+  it 'supports the drop lowest dice roll modifier' do
     text = '3d6d1'
 
     lexer = Lexer.new
     expect(lexer.tokenize(text)).to eq([Token.new(Token::DICE, '3d6'), Token.new(Token::DICE_ROLL_MODIFIER, 'd1')])
   end
 
-  it 'Supports numbers' do
+  it 'supports numbers' do
     text = '42'
 
     lexer = Lexer.new
     expect(lexer.tokenize(text)).to eq([Token.new(Token::NUMBER, '42')])
   end
 
-  it 'Supports the + operator' do
+  it 'supports the + operator' do
     text = '+'
 
     lexer = Lexer.new
     expect(lexer.tokenize(text)).to eq([Token.new(Token::OPERATOR, '+')])
   end
 
-  it 'Supports the - operator' do
+  it 'supports the - operator' do
     text = '-'
 
     lexer = Lexer.new
     expect(lexer.tokenize(text)).to eq([Token.new(Token::OPERATOR, '-')])
   end
 
-  it 'Tokenizes text into an array of tokens' do
-    text = '2d8+3d6d1+4-1'
+  it 'supports variables' do
+    text = '[STR]'
+
+    lexer = Lexer.new
+    expect(lexer.tokenize(text)).to eq([Token.new(Token::VARIABLE, 'STR')])
+  end
+
+  it 'tokenizes text into an array of tokens' do
+    text = '2d8+3d6d1+[STR]-1'
 
     expected = [
       Token.new(Token::DICE, '2d8'),
@@ -50,7 +57,7 @@ RSpec.describe Lexer, '#tokenize' do
       Token.new(Token::DICE, '3d6'),
       Token.new(Token::DICE_ROLL_MODIFIER, 'd1'),
       Token.new(Token::OPERATOR, '+'),
-      Token.new(Token::NUMBER, '4'),
+      Token.new(Token::VARIABLE, 'STR'),
       Token.new(Token::OPERATOR, '-'),
       Token.new(Token::NUMBER, '1')
     ]
@@ -59,7 +66,7 @@ RSpec.describe Lexer, '#tokenize' do
     expect(lexer.tokenize(text)).to eq(expected)
   end
 
-  it 'Ignores whitespace' do
+  it 'ignores whitespace' do
     text = "3d6 + 4\t- 1"
 
     expected = [
@@ -74,7 +81,7 @@ RSpec.describe Lexer, '#tokenize' do
     expect(lexer.tokenize(text)).to eq(expected)
   end
 
-  it "Errors on unexpected input" do
+  it "errors on unexpected input" do
     text = "3d6 + hunter2"
 
     lexer = Lexer.new

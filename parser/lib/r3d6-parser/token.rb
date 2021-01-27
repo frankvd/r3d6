@@ -8,6 +8,7 @@ module R3D6
       DICE = 2
       DICE_ROLL_MODIFIER = 3
       OPERATOR = 4
+      VARIABLE = 5
 
       attr_accessor :type, :value
 
@@ -30,6 +31,10 @@ module R3D6
 
       def self.operator(value)
         Token.new Token::OPERATOR, value
+      end
+
+      def self.variable(value)
+        Token.new Token::VARIABLE, value
       end
 
       def ==(other)

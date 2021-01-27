@@ -8,13 +8,18 @@ module R3D6
       def initialize
         @output = []
         @current = nil
+        @input = []
+        @index = 0
       end
 
       def tokenize(input)
         @output = []
         @current = Token.new
-        input.each_char do |char|
-          next_char char
+        @index = 0
+        @input = input.chars
+        while @index < input.size
+          next_char input[@index]
+          @index += 1
         end
         append unless @current.type == Token::UNKNOWN
 
@@ -28,6 +33,8 @@ module R3D6
           read_d char
         elsif operator?(char)
           read_operator char
+        elsif variable?(char)
+          read_variable char
         elsif whitespace?(char)
           nil
         else
@@ -59,6 +66,24 @@ module R3D6
         @output << token
       end
 
+      def read_variable(char)
+        identifier = ''
+
+        (1...(@input.size - @index)).each do |_i|
+          @index += 1
+          char = @input[@index]
+          break if char == ']'
+
+          identifier += char
+        end
+
+        raise 'Invalid variable' if char != ']'
+
+        @current.type = Token::VARIABLE
+        @current.value = identifier
+        append
+      end
+
       def append
         @output << @current
         @current = Token.new
@@ -70,6 +95,10 @@ module R3D6
 
       def operator?(char)
         ['+', '-'].include? char
+      end
+
+      def variable?(char)
+        char == '['
       end
 
       def whitespace?(char)

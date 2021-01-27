@@ -4,6 +4,7 @@ require 'r3d6-parser/node'
 require 'r3d6-parser/nodes/binary_expression'
 require 'r3d6-parser/nodes/integer'
 require 'r3d6-parser/nodes/dice_roll'
+require 'r3d6-parser/nodes/variable'
 require 'r3d6-parser/dice_roll'
 require 'r3d6-parser/modifier'
 require 'r3d6-parser/modifiers/drop_lowest'
@@ -44,6 +45,8 @@ module R3D6
           buffer_dice token
         when Token::DICE_ROLL_MODIFIER
           add_modifier token
+        when Token::VARIABLE
+          buffer_variable token
         end
       end
 
@@ -57,6 +60,10 @@ module R3D6
 
       def buffer_dice(token)
         @nodes << Nodes::DiceRoll.new(DiceRoll.from_s(token.value), nil, nil)
+      end
+
+      def buffer_variable(token)
+        @nodes << Nodes::Variable.new(token.value)
       end
 
       def add_modifier(token)
