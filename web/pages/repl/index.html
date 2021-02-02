@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=440, shrink-to-fit=yes, viewport-fit=cover" />
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+
+  <style>
+
+  </style>
+  <title>r3d6-repl</title>
+  <style>
+    body {
+      background: #212529;
+    }
+
+    .container {
+      min-width: 800px;
+      max-width: 1080px;
+      padding: 20px 40px;
+      margin: 0 auto;
+    }
+
+    .cursor {
+      animation: blink 1s linear infinite;
+    }
+
+    .input {
+      outline: none;
+      display: inline;
+      background: #212529;
+      border: 0;
+      color: #fff;
+      margin-left: 6px;
+    }
+
+    @keyframes blink{
+      25%{
+        opacity: 1;
+      }
+      50%{
+        opacity: 0;
+      }
+      75%{
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="nes-container is-rounded with-title is-dark">
+      <p class="title">r3d6-repl</p>
+      <div class="output">
+      </div>
+      <div><span class="prompt">r3d6(main):<span class="line">001</span>></span><input onkeydown="repl(this)" class="input" type="text" /></div>
+    </div>
+  </div>
+
+  <script>
+    let params = {};
+    function pad(n, width, z) {
+      z = z || '0';
+      n = n + '';
+      return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+    }
+    let line = 1;
+    let history = [];
+    let history_cursor = 0;
+    async function repl(e)  {
+      if (event.keyCode == 38 && history.length > 0) {
+        history_cursor = Math.max(0, history_cursor - 1)
+        e.value = history[history_cursor];
+      }
+      if (event.keyCode != 13) {
+        return;
+      }
+      let clone = e.parentNode.cloneNode(true);
+      clone.querySelector('input').disabled = true;
+      line++;
+      e.parentNode.querySelector('.line').textContent = pad(line, 3)
+      document.querySelector('.output').appendChild(clone);
+
+      if (e.value.includes("=")) {
+        [name, value] = e.value.split("=")
+        params[name.trim()] = value.trim();
+      } else {
+        var url = new URL('http://134.209.94.221:28564/' + e.value)
+        url.search = new URLSearchParams(params).toString();
+        let response = await fetch(url);
+        let output = document.createElement('div')
+        output.textContent = await response.text()
+        document.querySelector('.output').appendChild(output);
+      }
+      history.push(e.value)
+      history_cursor = history.length
+      e.value = '';
+    }
+  </script>
+</body>
+
+</html>

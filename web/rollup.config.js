@@ -27,17 +27,17 @@ const baseConfig = createSpaConfig({
   }
 });
 
-export default merge(baseConfig, {
-  // if you use createSpaConfig, you can use your index.html as entrypoint,
-  // any <script type="module"> inside will be bundled by rollup
-  input: './index.html',
-  plugins: [
-    replace({
-      __API_BASE_URL__: 'http://134.209.94.221:28564/'
-    })
-  ]
-
-  // alternatively, you can use your JS as entrypoint for rollup and
-  // optionally set a HTML template manually
-  // input: './app.js',
-});
+export default [
+  merge(baseConfig, {
+    input: './pages/index.html',
+    plugins: [
+      replace({
+        __API_BASE_URL__: 'http://134.209.94.221:28564/'
+      })
+    ]
+  }),
+  merge(baseConfig, {
+    output: {dir: './dist/repl'},
+    input: './pages/repl/index.html'
+  })
+];
