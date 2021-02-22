@@ -10,7 +10,7 @@ RUN gem install bundler:2.2.4
 RUN bundle config set --local deployment 'true'
 RUN bundle install
 
-RUN echo "/" > /app/CHECKS
+RUN echo "/3d6+4" > /app/CHECKS
 
 FROM ruby:3.0-alpine
 WORKDIR /app
