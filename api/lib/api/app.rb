@@ -1,28 +1,32 @@
-require 'sinatra/base'
+require 'roda'
 require 'r3d6-parser/lexer'
 require 'r3d6-parser/parser'
 
-class App < Sinatra::Base
+class App < Roda
 
-    configure do
-        set :lexer, R3D6::Parser::Lexer.new
-        set :parser, R3D6::Parser::Parser.new
+  opts[:parser] = R3D6::Parser::Parser.new
+  opts[:lexer] = R3D6::Parser::Lexer.new
+
+  plugin :default_headers,
+    'Content-Type' => 'text/plain',
+    'Access-Control-Allow-Origin' => '*'
+
+  route do |r|
+    r.get 'favicon.ico' do
+      response.status = 404
+      ''
     end
 
-    get '/favicon.ico' do
-        404
-    end
+    r.get String do |roll|
+      content_type = 'text/plain'
+      begin
+        ast = opts[:parser].parse(opts[:lexer].tokenize(roll))
+        output = ast.evaluate request.params
 
-    get '/*' do |roll|
-        content_type 'text/plain'
-        headers 'Access-Control-Allow-Origin' => '*'
-        begin
-            ast = settings.parser.parse(settings.lexer.tokenize(roll))
-            output = ast.evaluate params
-
-            "#{ast.echo} = #{output}"
-        rescue => exception
-            exception.message
-        end
+        "#{ast.echo} = #{output}"
+      rescue => exception
+        exception.message
+      end
     end
+  end
 end
