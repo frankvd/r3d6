@@ -18,6 +18,8 @@ class App < Roda
     end
 
     r.get String do |roll|
+      roll = roll.gsub '+', '%2B'
+      roll = CGI.unescape roll
       content_type = 'text/plain'
       begin
         ast = opts[:parser].parse(opts[:lexer].tokenize(roll))
