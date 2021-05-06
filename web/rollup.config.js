@@ -32,7 +32,7 @@ export default [
     input: './pages/index.html',
     plugins: [
       replace({
-        __API_BASE_URL__: 'http://134.209.94.221:28564/'
+        __API_BASE_URL__: 'https://r3d6-api.treegnome.tech/'
       })
     ]
   }),
