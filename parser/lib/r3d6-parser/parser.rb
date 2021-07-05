@@ -36,7 +36,7 @@ module R3D6
         when Token::DICE
           queue_operand Nodes::DiceRoll.new(DiceRoll.from_s(token.value))
         when Token::DICE_ROLL_MODIFIER
-          add_modifier2 token
+          add_modifier token
         when Token::VARIABLE
           queue_operand Nodes::Variable.new(token.value)
         when Token::OPERATOR
