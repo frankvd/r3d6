@@ -37,6 +37,8 @@ module R3D6
           read_variable char
         elsif whitespace?(char)
           nil
+        elsif parenthesis?(char)
+          read_parenthesis(char)
         else
           raise 'Unexpected input'
         end
@@ -62,6 +64,14 @@ module R3D6
         append unless @current.type == Token::UNKNOWN
         token = Token.new
         token.type = Token::OPERATOR
+        token.value = char
+        @output << token
+      end
+
+      def read_parenthesis(char)
+        append unless @current.type == Token::UNKNOWN
+        token = Token.new
+        token.type = char == '(' ? Token::OPEN_PARENTHESIS : Token::CLOSE_PARENHESIS
         token.value = char
         @output << token
       end
@@ -94,7 +104,7 @@ module R3D6
       end
 
       def operator?(char)
-        ['+', '-'].include? char
+        ['+', '-', '*', '/'].include? char
       end
 
       def variable?(char)
@@ -103,6 +113,10 @@ module R3D6
 
       def whitespace?(char)
         [' ', "\t"].include? char
+      end
+
+      def parenthesis?(char)
+        ['(', ')'].include? char
       end
     end
   end

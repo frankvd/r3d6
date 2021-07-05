@@ -9,12 +9,18 @@ module R3D6
       DICE_ROLL_MODIFIER = 3
       OPERATOR = 4
       VARIABLE = 5
+      OPEN_PARENTHESIS = 6
+      CLOSE_PARENHESIS = 7
 
       attr_accessor :type, :value
 
       def initialize(type = Token::UNKNOWN, value = '')
         @type = type
         @value = value
+      end
+
+      def left_parenthesis?
+        @type == OPEN_PARENTHESIS
       end
 
       def self.dice(value)

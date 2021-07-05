@@ -26,9 +26,7 @@ module R3D6
           dice
         end
 
-        def ==(other)
-          num == other.num
-        end
+        def ==(other) = num == other.num
       end
     end
   end

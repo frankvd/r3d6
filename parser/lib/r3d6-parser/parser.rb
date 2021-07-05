@@ -13,61 +13,102 @@ module R3D6
   module Parser
     class Parser
       def initialize
-        @operators = []
-        @nodes = []
+        @operand_queue = []
+        @operator_queue = []
       end
 
       # @param tokens [Array<Token>]
       def parse(tokens)
-        @operators = []
-        @nodes = []
         tokens.each do |t|
-          buffer_token t
+          read_token(t)
         end
 
-        until @operators.empty?
-          operator = @operators.pop
-          right = @nodes.pop
-          left = @nodes.pop
-          @nodes.push(Nodes::BinaryExpression.new(operator, left, right))
-        end
+        output_operator @operator_queue.pop until @operator_queue.empty?
 
-        @nodes.pop || Nodes::Integer.new(0, nil, nil)
+        @operand_queue.pop
       end
 
-      def buffer_token(token)
+      # @param token [Token]
+      def read_token(token)
         case token.type
-        when Token::OPERATOR
-          buffer_operator token.value
         when Token::NUMBER
-          buffer_number token
+          queue_operand Nodes::Integer.new(token.value.to_i)
         when Token::DICE
-          buffer_dice token
+          queue_operand Nodes::DiceRoll.new(DiceRoll.from_s(token.value))
         when Token::DICE_ROLL_MODIFIER
-          add_modifier token
+          add_modifier2 token
         when Token::VARIABLE
-          buffer_variable token
+          queue_operand Nodes::Variable.new(token.value)
+        when Token::OPERATOR
+          process_operator token
+        when Token::OPEN_PARENTHESIS
+          @operator_queue << token
+        when Token::CLOSE_PARENHESIS
+          process_close_parenthesis token
         end
       end
 
-      def buffer_operator(operator)
-        @operators << operator
+      def queue_operand(node)
+        @operand_queue << node
       end
 
-      def buffer_number(token)
-        @nodes << Nodes::Integer.new(token.value.to_i, nil, nil)
+      def queue_operator(token)
+        @operator_queue << token
       end
 
-      def buffer_dice(token)
-        @nodes << Nodes::DiceRoll.new(DiceRoll.from_s(token.value), nil, nil)
+      def process_operator(token)
+        while !@operator_queue.empty? &&
+              !@operator_queue.last.left_parenthesis? &&
+              (
+                precedence(@operator_queue.last) > precedence(token) ||
+                (precedence(@operator_queue.last) == precedence(token) && left_associative?(token))
+              )
+          output_operator(@operator_queue.pop)
+        end
+
+        queue_operator(token)
       end
 
-      def buffer_variable(token)
-        @nodes << Nodes::Variable.new(token.value)
+      def process_close_parenthesis(_token)
+        while @operator_queue.last.type != Token::OPEN_PARENTHESIS
+          operator = @operator_queue.pop
+          raise 'Mismatched parenthesis' if operator.nil?
+
+          output_operator operator
+        end
+
+        operator = @operator_queue.pop
+        raise 'Mismatched prenthesis' if operator.type != Token::OPEN_PARENTHESIS
+      end
+
+      def precedence(token)
+        case token.value
+        when '^'
+          4
+        when '/', '*'
+          3
+        when '+', '-'
+          2
+        end
+      end
+
+      def left_associative?(token)
+        case token.value
+        when '^'
+          false
+        else
+          true
+        end
+      end
+
+      def output_operator(token)
+        right = @operand_queue.pop
+        left = @operand_queue.pop
+        @operand_queue << Nodes::BinaryExpression.new(token.value, left, right)
       end
 
       def add_modifier(token)
-        @nodes.last.value.modifiers << Modifier.from_s(token.value)
+        @operand_queue.last.value.modifiers << Modifier.from_s(token.value)
       end
     end
   end

@@ -1,8 +1,10 @@
 AllCops:
+  TargetRubyVersion: 3
   Include:
     - lib/**/*.rb
   Exclude:
     - bin/*
+    - spec/**/*.rb
 Style/Documentation:
   Enabled: false
 

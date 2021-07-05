@@ -3,7 +3,6 @@ require 'r3d6-parser/lexer'
 require 'r3d6-parser/parser'
 
 class App < Roda
-
   opts[:parser] = R3D6::Parser::Parser.new
   opts[:lexer] = R3D6::Parser::Lexer.new
 

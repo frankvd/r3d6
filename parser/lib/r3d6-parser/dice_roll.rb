@@ -47,9 +47,7 @@ module R3D6
         DiceRoll.new(*str.split('d').map(&:to_i))
       end
 
-      def to_s
-        "#{@number}d#{@die}"
-      end
+      def to_s = "#{@number}d#{@die}"
     end
   end
 end

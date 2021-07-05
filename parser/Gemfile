@@ -7,6 +7,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 group :development do
   gem 'rubocop', require: false
   gem 'pry'
+  gem 'solargraph'
 end
 
 group :test do

@@ -3,9 +3,12 @@
 require 'r3d6-parser/lexer'
 require 'r3d6-parser/parser'
 
-include R3D6::Parser
+Lexer = R3D6::Parser::Lexer
+Token = R3D6::Parser::Token
 
 RSpec.describe Lexer, '#tokenize' do
+  # @!attribute subject
+  #   @return [Lexer]
   it 'supports dice rolls' do
     text = '3d6'
 
@@ -39,6 +42,16 @@ RSpec.describe Lexer, '#tokenize' do
 
     lexer = Lexer.new
     expect(lexer.tokenize(text)).to eq([Token.new(Token::OPERATOR, '-')])
+  end
+
+  it 'supports parentheses' do
+    text = '(1)'
+    expected = [
+      Token.new(Token::OPEN_PARENTHESIS, '('),
+      Token.new(Token::NUMBER, '1'),
+      Token.new(Token::CLOSE_PARENHESIS, ')')
+    ]
+    expect(subject.tokenize(text)).to eq(expected)
   end
 
   it 'supports variables' do
@@ -81,10 +94,10 @@ RSpec.describe Lexer, '#tokenize' do
     expect(lexer.tokenize(text)).to eq(expected)
   end
 
-  it "errors on unexpected input" do
-    text = "3d6 + hunter2"
+  it 'errors on unexpected input' do
+    text = '3d6 + hunter2'
 
     lexer = Lexer.new
-    expect { lexer.tokenize(text) }.to raise_error("Unexpected input")
+    expect { lexer.tokenize(text) }.to raise_error('Unexpected input')
   end
 end

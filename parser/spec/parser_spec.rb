@@ -17,17 +17,20 @@ RSpec.describe R3D6::Parser::Parser, '#parse' do
     ]
 
     parser = Parser.new
-    ast = parser.parse tokens
+    ast = parser.parse2 tokens
 
     roll = DiceRoll.new(3, 6)
     roll.modifiers << Modifiers::DropLowest.new(1)
 
     expect(ast).to eq(
-      Nodes::BinaryExpression.new('+',
-        Nodes::Integer.new(3),
-        Nodes::BinaryExpression.new('-',
+      Nodes::BinaryExpression.new(
+        '-',
+        Nodes::BinaryExpression.new(
+          '+',
+          Nodes::Integer.new(3),
           Nodes::DiceRoll.new(roll),
-          Nodes::Variable.new('STR'))
+        ),
+        Nodes::Variable.new('STR')
       )
     )
   end
