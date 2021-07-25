@@ -3,7 +3,7 @@
 module R3D6
   module Parser
     module Modifiers
-      class DropLowest
+      class KeepHighest
         attr_accessor :num
 
         def initialize(num)
@@ -16,7 +16,7 @@ module R3D6
           drop = []
           dice.each do |die|
             drop << die
-            drop = drop.sort_by(&:value).take num
+            drop = drop.sort_by(&:value).reverse.take num
           end
 
           drop.each do |die|

@@ -9,3 +9,5 @@ gem "r3d6-parser", path: "../parser"
 gem "puma", "~> 5.1"
 
 gem "roda", "~> 3.41"
+
+gem "solargraph", "~> 0.42.3"

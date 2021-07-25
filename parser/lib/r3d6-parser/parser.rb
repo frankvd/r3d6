@@ -42,7 +42,7 @@ module R3D6
         when Token::OPERATOR
           process_operator token
         when Token::OPEN_PARENTHESIS
-          @operator_queue << token
+          queue_operator token
         when Token::CLOSE_PARENHESIS
           process_close_parenthesis token
         end
