@@ -5,7 +5,7 @@ RUN cd /app && yarn install && npm run build
 FROM nginx:1.19.6-alpine
 
 RUN echo $' server {\n\
-    listen       30294;\n\
+    listen       80;\n\
     server_name  localhost;\n\
 \n\
     location / {\n\
