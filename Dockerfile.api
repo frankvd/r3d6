@@ -17,7 +17,6 @@ WORKDIR /app
 COPY --from=builder /app /app
 COPY --from=builder /parser /parser
 RUN bundle config --local path vendor/bundle
-EXPOSE 28564
 
-CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "28564"]
+CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "5000"]
 
