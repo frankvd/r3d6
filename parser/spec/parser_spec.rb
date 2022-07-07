@@ -17,7 +17,7 @@ RSpec.describe R3D6::Parser::Parser, '#parse' do
     ]
 
     parser = Parser.new
-    ast = parser.parse2 tokens
+    ast = parser.parse tokens
 
     roll = DiceRoll.new(3, 6)
     roll.modifiers << Modifiers::DropLowest.new(1)

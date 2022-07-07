@@ -13,12 +13,7 @@ module R3D6
         def apply(dice)
           return dice if num.zero?
 
-          drop = []
-          dice.each do |die|
-            drop << die
-            drop = drop.sort_by(&:value).reverse.take num
-          end
-
+          drop = dice.sort_by(&:value).take dice.length - num
           drop.each do |die|
             die.state = :dropped
           end

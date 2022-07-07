@@ -8,7 +8,7 @@ require 'r3d6-parser/parser'
 
 require 'pp'
 
-test = '3d6d1+4'
+test = '(3 d 6 d1+4)*2'
 
 tokenizer = R3D6::Parser::Lexer.new
 

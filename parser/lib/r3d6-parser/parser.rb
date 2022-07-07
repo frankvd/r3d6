@@ -8,6 +8,7 @@ require 'r3d6-parser/nodes/variable'
 require 'r3d6-parser/dice_roll'
 require 'r3d6-parser/modifier'
 require 'r3d6-parser/modifiers/drop_lowest'
+require 'r3d6-parser/modifiers/keep_highest'
 
 module R3D6
   module Parser

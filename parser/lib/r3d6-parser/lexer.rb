@@ -31,6 +31,8 @@ module R3D6
           read_digit char
         elsif char == 'd'
           read_d char
+        elsif char == 'k'
+          read_modifier char
         elsif operator?(char)
           read_operator char
         elsif variable?(char)
@@ -51,13 +53,17 @@ module R3D6
 
       def read_d(char)
         if [Token::DICE, Token::DICE_ROLL_MODIFIER].include? @current.type
-          append
-          @current.type = Token::DICE_ROLL_MODIFIER
-          @current.value = @current.value + char
+          read_modifier char
         elsif [Token::NUMBER, Token::UNKNOWN].include? @current.type
           @current.value = @current.value + char
           @current.type = Token::DICE
         end
+      end
+
+      def read_modifier(char)
+        append
+        @current.type = Token::DICE_ROLL_MODIFIER
+        @current.value = @current.value + char
       end
 
       def read_operator(char)
