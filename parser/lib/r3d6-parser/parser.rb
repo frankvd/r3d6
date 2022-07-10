@@ -6,6 +6,7 @@ require 'r3d6-parser/nodes/integer'
 require 'r3d6-parser/nodes/dice_roll'
 require 'r3d6-parser/nodes/variable'
 require 'r3d6-parser/dice_roll'
+require 'r3d6-parser/variable'
 require 'r3d6-parser/modifier'
 require 'r3d6-parser/modifiers/drop_lowest'
 require 'r3d6-parser/modifiers/keep_highest'
@@ -35,11 +36,16 @@ module R3D6
         when Token::NUMBER
           queue_operand Nodes::Integer.new(token.value.to_i)
         when Token::DICE
-          queue_operand Nodes::DiceRoll.new(DiceRoll.from_s(token.value))
+          diceroll = DiceRoll.from_s(token.value)
+          queue_operand Nodes::DiceRoll.new(diceroll)
+          token.printer = ->(_) { "(#{diceroll.dice.join(' + ')})" }
         when Token::DICE_ROLL_MODIFIER
           add_modifier token
+          token.printer = ->(_) { "" }
         when Token::VARIABLE
-          queue_operand Nodes::Variable.new(token.value)
+          variable = Variable.new(token.value)
+          queue_operand Nodes::Variable.new(variable)
+          token.printer = ->(_) { "[#{variable.value}]" }
         when Token::OPERATOR
           process_operator token
         when Token::OPEN_PARENTHESIS

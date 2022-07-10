@@ -30,8 +30,12 @@ RSpec.describe R3D6::Parser::Parser, '#parse' do
           Nodes::Integer.new(3),
           Nodes::DiceRoll.new(roll),
         ),
-        Nodes::Variable.new('STR')
+        Nodes::Variable.new(Variable.new('STR'))
       )
     )
+
+    ast.evaluate({ 'STR' => -2 })
+
+    expect(tokens.map(&:print).reject(&:empty?).join(' ')).to eq("3 + (5 + 5 + \u03352\u0335) - [-2]")
   end
 end

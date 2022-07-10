@@ -12,11 +12,12 @@ module R3D6
       OPEN_PARENTHESIS = 6
       CLOSE_PARENHESIS = 7
 
-      attr_accessor :type, :value
+      attr_accessor :type, :value, :printer
 
       def initialize(type = Token::UNKNOWN, value = '')
         @type = type
         @value = value
+        @printer = ->(v) { v.to_s }
       end
 
       def left_parenthesis?
@@ -41,6 +42,10 @@ module R3D6
 
       def self.variable(value)
         Token.new Token::VARIABLE, value
+      end
+
+      def print
+        @printer.call(value)
       end
 
       def ==(other)

@@ -5,10 +5,11 @@ module R3D6
     module Nodes
       class Variable < R3D6::Parser::Node
         def evaluate(env = {})
-          raise "Undefined variable [#{@value}]" unless env.key? @value
+          raise "Undefined variable [#{@value.name}]" unless env.key? @value.name
 
-          meta[:echo] = "[#{env[@value]}]"
-          env[@value].to_i
+          @value.value = env[@value.name].to_i
+          meta[:echo] = "[#{@value.value}]"
+          @value.value
         end
       end
     end
