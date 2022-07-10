@@ -9,7 +9,7 @@ class App < Roda
   opts[:lexer] = R3D6::Parser::Lexer.new
 
   plugin :default_headers,
-         'Content-Type' => 'text/plain',
+         'Content-Type' => 'text/plain; charset=UTF-8',
          'Access-Control-Allow-Origin' => '*'
 
   route do |r|
@@ -22,10 +22,11 @@ class App < Roda
       roll = roll.gsub '+', '%2B'
       roll = CGI.unescape roll
       begin
-        ast = opts[:parser].parse(opts[:lexer].tokenize(roll))
+        tokens = opts[:lexer].tokenize(roll)
+        ast = opts[:parser].parse(tokens)
         output = ast.evaluate request.params
 
-        "#{ast.echo} = #{output}"
+        "#{tokens.map(&:print).reject(&:empty?).join(' ')} = #{output}"
       rescue StandardError => e
         e.message
       end
