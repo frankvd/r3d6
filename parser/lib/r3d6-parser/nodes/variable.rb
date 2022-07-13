@@ -8,7 +8,6 @@ module R3D6
           raise "Undefined variable [#{@value.name}]" unless env.key? @value.name
 
           @value.value = env[@value.name].to_i
-          meta[:echo] = "[#{@value.value}]"
           @value.value
         end
       end

@@ -6,7 +6,6 @@ module R3D6
       class DiceRoll < R3D6::Parser::Node
         def evaluate(_env = {})
           @value.roll
-          meta[:echo] = "(#{@value.dice.join(' + ')})"
           @value.sum
         end
       end

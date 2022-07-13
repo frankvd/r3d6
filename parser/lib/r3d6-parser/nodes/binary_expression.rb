@@ -5,7 +5,6 @@ module R3D6
     module Nodes
       class BinaryExpression < R3D6::Parser::Node
         def evaluate(env = {})
-          meta[:echo] = " #{@value} "
           left = to_i @left.evaluate env
           right = to_i @right.evaluate env
           case @value

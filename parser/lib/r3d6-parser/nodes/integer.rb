@@ -5,7 +5,6 @@ module R3D6
     module Nodes
       class Integer < R3D6::Parser::Node
         def evaluate(_env = {})
-          meta[:echo] = @value.to_s
           @value
         end
       end
