@@ -24,6 +24,10 @@ module R3D6
         @type == OPEN_PARENTHESIS
       end
 
+      def right_parenthesis?
+        @type == CLOSE_PARENHESIS
+      end
+
       def self.dice(value)
         Token.new Token::DICE, value
       end
@@ -44,8 +48,31 @@ module R3D6
         Token.new Token::VARIABLE, value
       end
 
+      def self.open
+        Token.new Token::OPEN_PARENTHESIS, '('
+      end
+
+      def self.close
+        Token.new Token::CLOSE_PARENHESIS, ')'
+      end
+
       def print
         @printer.call(value)
+      end
+
+      def modifier?
+        @type == DICE_ROLL_MODIFIER
+      end
+
+      def self.print(tokens)
+        str = ''
+        tokens.reject(&:modifier?).each_cons(2) do |t, n|
+          str += t.print
+          str += ' ' unless t.left_parenthesis? || n.right_parenthesis?
+        end
+        str += tokens.last.print
+
+        str
       end
 
       def ==(other)

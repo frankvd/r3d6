@@ -13,7 +13,9 @@ RSpec.describe R3D6::Parser::Parser, '#parse' do
       Token.dice('3d6'),
       Token.modifier('d1'),
       Token.operator('-'),
-      Token.variable('STR')
+      Token.open,
+      Token.variable('STR'),
+      Token.close
     ]
 
     parser = Parser.new
@@ -36,6 +38,6 @@ RSpec.describe R3D6::Parser::Parser, '#parse' do
 
     ast.evaluate({ 'STR' => -2 })
 
-    expect(tokens.map(&:print).reject(&:empty?).join(' ')).to eq("3 + (5 + 5 + \u03352\u0335) - [-2]")
+    expect(Token.print(tokens)).to eq("3 + (5 + 5 + 2\u0335) - ([-2])")
   end
 end
