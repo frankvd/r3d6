@@ -13,7 +13,7 @@ module R3D6
 
       def to_s
         str = value.to_s
-        str = "\u0335#{str}\u0335" if state == :dropped
+        str = "#{str}\u0335" if state == :dropped
         str
       end
 
