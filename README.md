@@ -1,4 +1,6 @@
 # R3D6
+![Screenshot from 2024-01-06 14-48-17](https://github.com/frankvd/r3d6/assets/1485248/6723982b-f0e4-4aee-afe3-554cffcbcdc3)
+*Screenshot of the REPL frontend hosted at https://r3d6-web.treegnome.tech/repl*
 
 This repository is split up into 3 projects:
 
