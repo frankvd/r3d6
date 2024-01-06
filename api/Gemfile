@@ -6,8 +6,10 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem "r3d6-parser", path: "../parser"
 
-gem "puma", "~> 5.1"
+gem "puma", "~> 6.0"
 
 gem "roda", "~> 3.41"
 
 gem "solargraph", "~> 0.42.3"
+
+gem "rackup", "~> 2.1"
