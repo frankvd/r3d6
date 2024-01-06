@@ -66,11 +66,12 @@ module R3D6
 
       def self.print(tokens)
         str = ''
-        tokens.reject(&:modifier?).each_cons(2) do |t, n|
+        without_modifiers = tokens.reject(&:modifier?)
+        without_modifiers.each_cons(2) do |t, n|
           str += t.print
           str += ' ' unless t.left_parenthesis? || n.right_parenthesis?
         end
-        str += tokens.last.print
+        str += without_modifiers.last.print
 
         str
       end
