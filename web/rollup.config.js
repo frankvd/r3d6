@@ -1,7 +1,7 @@
-import merge from 'deepmerge';
-import replace from '@rollup/plugin-replace';
+import merge from "deepmerge";
+import replace from "@rollup/plugin-replace";
 // use createSpaConfig for bundling a Single Page App
-import { createSpaConfig } from '@open-wc/building-rollup';
+import { createSpaConfig } from "@open-wc/building-rollup";
 
 // use createBasicConfig to do regular JS to JS bundling
 // import { createBasicConfig } from '@open-wc/building-rollup';
@@ -15,29 +15,33 @@ const baseConfig = createSpaConfig({
   // legacyBuild: true,
 
   // development mode creates a non-minified build for debugging or development
-  developmentMode: process.env.ROLLUP_WATCH === 'true',
+  developmentMode: process.env.ROLLUP_WATCH === "true",
 
   // set to true to inject the service worker registration into your index.html
   injectServiceWorker: false,
 
   html: {
     transform: [
-      html => html.replace(/<link rel="preload" href="[^"]+" as="script" crossorigin="anonymous">/, '')
-    ]
-  }
+      (html) =>
+        html.replace(
+          /<link rel="preload" href="[^"]+" as="script" crossorigin="anonymous">/,
+          "",
+        ),
+    ],
+  },
 });
 
 export default [
   merge(baseConfig, {
-    input: './pages/index.html',
+    input: "./pages/index.html",
     plugins: [
       replace({
-        __API_BASE_URL__: 'https://r3d6-api.treegnome.tech/'
-      })
-    ]
+        __API_BASE_URL__: "https://r3d6-api.x.codetje.app/",
+      }),
+    ],
   }),
   merge(baseConfig, {
-    output: {dir: './dist/repl'},
-    input: './pages/repl/index.html'
-  })
+    output: { dir: "./dist/repl" },
+    input: "./pages/repl/index.html",
+  }),
 ];

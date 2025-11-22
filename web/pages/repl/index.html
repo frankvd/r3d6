@@ -88,7 +88,7 @@
         [name, value] = e.value.split("=")
         params[name.trim()] = value.trim();
       } else {
-        var url = new URL('https://r3d6-api.treegnome.tech/' + e.value)
+        var url = new URL('https://r3d6-api.x.codetje.app/' + e.value)
         url.search = new URLSearchParams(params).toString();
         let response = await fetch(url);
         let output = document.createElement('div')
